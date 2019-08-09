@@ -90,6 +90,37 @@ public class RBTree<K extends Comparable<K>, V> {
         return x;
     }
 
+    //     node                   x
+    //    /   \     右旋转       /  \
+    //   x    T2   ------->   y   node
+    //  / \                       /  \
+    // y  T1                     T1  T2
+    private Node rightRotate(Node node) {
+        Node x = node.left;
+
+        //右旋转
+        node.left=x.right;
+        x.right=node;
+
+        x.color=node.color;
+        node.color=RED;
+
+        return x;
+    }
+
+    /** 
+    * @Description:  颜色反转
+    * @Param: [node]node为根的包括他的两个孩子进行颜色反转
+    * @return: void 
+    * @Author: ZBK 
+    * @Date: 2019/8/10 
+    */ 
+    private void flipColors(Node node){
+        node.color = RED;
+        node.left.color = node.right.color = BLACK;
+        
+    }
+
     // 向以node为根的红黑树中插入元素(key, value)，递归算法
     // 返回插入新节点后红黑树的根
     private Node add(Node node, K key, V value){
