@@ -137,6 +137,25 @@ public class RBTree<K extends Comparable<K>, V> {
         else // key.compareTo(node.key) == 0
             node.value = value;
 
+        //天机完了,对颜色进行维护
+        //首先针对左旋转,左旋转是因为noe.right为红色,要进行左旋转
+        //但是要考虑到node.left,如果是node.left也为红,那么房东为黑
+        //就要进行颜色翻转
+        //因此我们这里设置为条件是满足左旋条件不满足颜色反转条件
+        if(isRed(node.right) && !isRed(node.left))
+            node=leftRotat(node);
+
+        //针对是否进行右旋转,也就是node.left为红,node.left.left也为红
+        //那就对node进行右旋转.
+        //右旋完后,节点颜色通常是root:黑,left/right:red
+        //要在之后的递归中处理颜色问题
+        if (isRed(node.left) && isRed(node.left.left))
+            node=rightRotate(node);
+
+        //进行颜色翻转
+        if(isRed(node.right) && isRed(node.left))
+            flipColors(node);
+
         return node;
     }
 
